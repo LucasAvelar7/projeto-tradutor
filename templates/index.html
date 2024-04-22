@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tradutor de Voz Médico</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #007bff;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        textarea, select, input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .translation {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tradutor de Voz Médico</h1>
+        <form method="post">
+            <label for="texto_a_traduzir">Digite ou Fale o Texto:</label>
+            <textarea name="texto_a_traduzir" rows="4" cols="50" placeholder="Digite ou fale o texto aqui...">{{ request.form.get('texto_a_traduzir') }}</textarea>
+            
+            <label for="selected_language">Idioma de Origem:</label>
+            <select name="selected_language">
+                {% for language in languages %}
+                    <option value="{{ language[1] }}" {% if language[1] == selected_language %}selected{% endif %}>{{ language[0] }}</option>
+                {% endfor %}
+            </select>
+            
+            <label for="selected_target_language">Idioma de Destino:</label>
+            <select name="selected_target_language">
+                {% for language in languages %}
+                    <option value="{{ language[1] }}" {% if language[1] == selected_target_language %}selected{% endif %}>{{ language[0] }}</option>
+                {% endfor %}
+            </select>
+
+            <input type="submit" name="falar" value="Falar texto">
+            <input type="submit" name="digitar" value="Traduzir texto digitado">
+        </form>
+
+        {% if translation %}
+            <div class="translation">
+                <h2>Tradução:</h2>
+                <p>{{ translation }}</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
